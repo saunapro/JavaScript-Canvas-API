@@ -54,6 +54,9 @@ function newPos() {
   if (ball.y + ball.w > canvas.height || ball.y - ball.w < 0) {
     ball.dy *= -1;
   }
+  if(loppu == true){
+    location.reload("index.html")
+  }
 
   
   if (
@@ -62,10 +65,12 @@ function newPos() {
     ball.y < player.y + player.h &&
     ball.y + ball.h > player.y
   ) {
+    
     loppu = true;
     alku = false;
     let pistemaara = document.getElementById("pisteet");
-    pistemaara.textContent = parseInt(-1);
+    pistemaara.textContent = -1;
+    location.reload("index.html")
   }
 
   player.x += player.dx;
