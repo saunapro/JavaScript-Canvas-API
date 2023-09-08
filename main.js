@@ -13,6 +13,16 @@ const player = {
   h: 100
 };
 
+const ball = {
+  x: 200,
+  y: 200,
+  speed: 1,
+  dx: 5,
+  dy: 4,
+  w: 60,
+  h: 60
+}
+
 const keys = {}; 
 
 function clear() {
@@ -25,7 +35,19 @@ function drawPlayer() {
     ctx.drawImage(image, player.x, player.y, player.w, player.h);
 }
 
+function drawBall() {
+  const image = new Image();
+  image.src = 'kuva/este.png';
+  ctx.drawImage(image, ball.x, ball.y, ball.w, ball.h);
+}
+
 function newPos() {
+  ball.x += ball.dx;
+  ball.y += ball.dy;
+  // Detect walls
+  if (ball.x + ball.w > canvas.width || ball.x - ball.w < 0) { ball.dx *= -1; }
+  if (ball.y + ball.w > canvas.height || ball.y - ball.w < 0) { ball.dy *= -1; }
+  
   player.x += player.dx;
   player.y += player.dy;
   if (player.x < 0) player.x = 0;
@@ -50,6 +72,7 @@ function update() {
   image.src = 'kuva/kuva.png';
   ctx.drawImage(image, player.x, player.y, player.w, player.h);
   drawPlayer();
+  drawBall();
   newPos();
   }
   requestAnimationFrame(update);
