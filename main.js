@@ -17,11 +17,11 @@ const player = {
 };
 
 const ball = {
-  x: 200,
-  y: 200,
+  x: 50,
+  y: 50,
   speed: 1,
-  dx: 5,
-  dy: 4,
+  dx: 2,
+  dy: 1,
   w: 60,
   h: 60
 }
@@ -47,9 +47,15 @@ function drawBall() {
 function newPos() {
   ball.x += ball.dx;
   ball.y += ball.dy;
-  // Detect walls
-  if (ball.x + ball.w > canvas.width || ball.x - ball.w < 0) { ball.dx *= -1; }
-  if (ball.y + ball.w > canvas.height || ball.y - ball.w < 0) { ball.dy *= -1; }
+
+  if (ball.x + ball.w > canvas.width || ball.x < 0) {
+    ball.dx *= -1;
+  }
+  if (ball.y + ball.h > canvas.height || ball.y < 0) {
+    ball.dy *= -1;
+  }
+
+
   
   player.x += player.dx;
   player.y += player.dy;
