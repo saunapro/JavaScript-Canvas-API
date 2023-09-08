@@ -64,8 +64,9 @@ function newPos() {
   ) {
     
     loppu = true;
-    player.x = 50; 
-    player.y = 50;
+    alku = false;
+    let pistemaara = document.getElementById("pisteet");
+    pistemaara.textContent = -1;
   }
 
   player.x += player.dx;
@@ -151,11 +152,8 @@ document.addEventListener("keyup", (e) => {
 function pisteytys(){
   let pistemaara = document.getElementById("pisteet");
   pistemaara.textContent = parseInt(pistemaara.textContent) + 1;
-
-  if(loppu == true){
-    pistemaara == 0;
     
-  }
+
 }
 
 
@@ -174,6 +172,9 @@ function handleKeys() {
 }
 
 update();
+
+
+
 
 
 
