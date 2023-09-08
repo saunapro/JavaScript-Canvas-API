@@ -17,11 +17,11 @@ const player = {
 };
 
 const ball = {
-  x: 50,
-  y: 50,
+  x: 200,
+  y: 200,
   speed: 1,
-  dx: 2,
-  dy: 1,
+  dx: 5,
+  dy: 4,
   w: 60,
   h: 60
 }
@@ -48,15 +48,26 @@ function newPos() {
   ball.x += ball.dx;
   ball.y += ball.dy;
 
-  if (ball.x + ball.w > canvas.width || ball.x < 0) {
+  if (ball.x + ball.w > canvas.width || ball.x - ball.w < 0) {
     ball.dx *= -1;
   }
-  if (ball.y + ball.h > canvas.height || ball.y < 0) {
+  if (ball.y + ball.w > canvas.height || ball.y - ball.w < 0) {
     ball.dy *= -1;
   }
 
-
   
+  if (
+    ball.x < player.x + player.w &&
+    ball.x + ball.w > player.x &&
+    ball.y < player.y + player.h &&
+    ball.y + ball.h > player.y
+  ) {
+    
+    loppu = true;
+    player.x = 50; 
+    player.y = 50;
+  }
+
   player.x += player.dx;
   player.y += player.dy;
   if (player.x < 0) player.x = 0;
@@ -163,7 +174,6 @@ function handleKeys() {
 }
 
 update();
-
 
 
 
