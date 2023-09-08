@@ -62,11 +62,10 @@ function newPos() {
     ball.y < player.y + player.h &&
     ball.y + ball.h > player.y
   ) {
-    
     loppu = true;
     alku = false;
     let pistemaara = document.getElementById("pisteet");
-    pistemaara.textContent = -1;
+    pistemaara.textContent = parseInt(-1);
   }
 
   player.x += player.dx;
