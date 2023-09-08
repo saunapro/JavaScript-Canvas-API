@@ -3,6 +3,9 @@ const ctx = canvas.getContext("2d");
 
 let alku = false;
 
+let loppu = false;
+//Tämä on tosi kun peli hävitään
+
 const player = {
   x: 50,
   y: 50,
@@ -67,6 +70,9 @@ function update() {
   } else{
     const aloitus = document.getElementById("alkuruutu");
     aloitus.style.display = "none";
+
+    const piste = document.getElementById("pistemaara");
+    piste.style.display = "block";
   
   const image = new Image();
   image.src = 'kuva/kuva.png';
@@ -74,8 +80,10 @@ function update() {
   drawPlayer();
   drawBall();
   newPos();
+  pisteytys()
   }
   requestAnimationFrame(update);
+  
 }
 
 function aloita(event){
@@ -85,6 +93,10 @@ function aloita(event){
   alku = true;
 
   update();
+
+  const piste = document.getElementById("pistemaara");
+  piste.style.display = "block";
+
 }
 
 function moveUp() {
@@ -118,6 +130,16 @@ document.addEventListener("keyup", (e) => {
   delete keys[e.key]; 
   handleKeys();
 });
+
+function pisteytys(){
+  let pistemaara = document.getElementById("pisteet");
+  pistemaara.textContent = parseInt(pistemaara.textContent) + 1;
+
+  if(loppu == true){
+    pistemaara == 0;
+    
+  }
+}
 
 
 function handleKeys() {
