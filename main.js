@@ -6,6 +6,8 @@ let alku = false;
 let loppu = false;
 //Tämä on tosi kun peli hävitään
 
+let pointWall = 500; //pelin vaikeustaso vaihtuu joka 500 pisteen jälkeen
+
 const player = {
   x: 50,
   y: 50,
@@ -19,9 +21,8 @@ const player = {
 const ball = {
   x: 200,
   y: 200,
-  speed: 1,
-  dx: 5,
-  dy: 4,
+  dx: 2,
+  dy: 1,
   w: 60,
   h: 60
 }
@@ -45,20 +46,18 @@ function drawBall() {
 }
 
 function newPos() {
+  // pallon liikkuminen 
   ball.x += ball.dx;
   ball.y += ball.dy;
-
-  if (ball.x + ball.w > canvas.width || ball.x - ball.w < 0) {
-    ball.dx *= -1;
-  }
-  if (ball.y + ball.w > canvas.height || ball.y - ball.w < 0) {
+   // vasen ja oikee
+   if (ball.x + ball.w > canvas.width || ball.x < 0) {
+     ball.dx *= -1;
+   }
+   // ylä ja ala
+   if (ball.y + ball.h > canvas.height || ball.y < 0) {
     ball.dy *= -1;
-  }
-  if(loppu == true){
-    location.reload("index.html")
-  }
+   }
 
-  
   if (
     ball.x < player.x + player.w &&
     ball.x + ball.w > player.x &&
@@ -96,16 +95,13 @@ function update() {
     const piste = document.getElementById("pistemaara");
     piste.style.display = "block";
   
-  const image = new Image();
-  image.src = 'kuva/kuva.png';
-  ctx.drawImage(image, player.x, player.y, player.w, player.h);
-  drawPlayer();
-  drawBall();
-  newPos();
-  pisteytys()
+    drawPlayer();
+    drawBall();
+    newPos();
+    pisteytys()
   }
+
   requestAnimationFrame(update);
-  
 }
 
 function aloita(event){
@@ -142,7 +138,6 @@ function stopMoving() {
   player.dy = 0;
 }
 
-
 document.addEventListener("keydown", (e) => {
   keys[e.key] = true; 
   handleKeys();
@@ -156,10 +151,19 @@ document.addEventListener("keyup", (e) => {
 function pisteytys(){
   let pistemaara = document.getElementById("pisteet");
   pistemaara.textContent = parseInt(pistemaara.textContent) + 1;
-    
 
+  if (parseInt(pistemaara.textContent) === pointWall) {
+    pointWall += 500; // pitää kirjaa siitä millon pistemäärä mennyt 500, jolloin pallon liikkuminen nopeutuu
+
+    // pallon suunnan vaihtaminen kun nopeus vaihtuu
+    // Math.sign() kertoo onko negatiivinen -1 nolla 0 tai positiivinen 1
+    console.log(`sign [${Math.sign(ball.dx)} ${ball.dx}] [${Math.sign(ball.dy)} ${ball.dy}]`)
+    if (Math.sign(ball.dx) === 1 || Math.sign(ball.dx) === 0) {ball.dx += 1}
+    if (Math.sign(ball.dx) === -1) {ball.dx -= 1}
+    if (Math.sign(ball.dy) === 1 || Math.sign(ball.dy) === 0) {ball.dy += 1}
+    if (Math.sign(ball.dy) === -1) {ball.dy -= 1} 
+  }
 }
-
 
 function handleKeys() {
   stopMoving(); 
@@ -176,9 +180,3 @@ function handleKeys() {
 }
 
 update();
-
-
-
-
-
-
