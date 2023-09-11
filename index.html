@@ -4,12 +4,21 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style.css">
-    <title>Document</title>
+    <title>Pallonväistö peli</title>
 </head>
 <body>
 
 <div id="alkuruutu" class="alku">
-    <h1>Paina nappia aloittaaksesi</h1>
+    <h1 id="aloitus">Paina nappia aloittaaksesi</h1>
+    <div id="loppuruutu" class="text-center">
+        <h1 id="havio">Peli ohi!</h1>
+    </div>
+    <div id="loppuruutu2" class="text-center">
+        <h2 id="havio2">Lopputulos:</h2>
+    </div>
+    <div id="lopputulos" class="text-center">
+        <h1 id="pistetulos">0</h1>
+    </div>
 </div>
 
     <canvas id="canvas" width="600" height="600"></canvas>
@@ -17,6 +26,15 @@
     <div id="pistemaara">
     <h1 id="pisteet">0</h1>
 </div>
+
+<audio id="taustamusa" loop>
+    <source src="ääni/Uncle Dave (Heavy Metal).mp3" type="audio/mp3">
+</audio>
+
+<audio id="loppuaani">
+    <source src="ääni/Sound Effect.mp3" type="audio/mp3">
+</audio>
+
 </body>
 
 
