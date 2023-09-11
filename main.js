@@ -1,12 +1,17 @@
 const canvas = document.getElementById("canvas");
 const ctx = canvas.getContext("2d");
+const musa = document.getElementById("taustamusa");
+const aani = document.getElementById("loppuaani");
 
 let alku = false;
-
 let loppu = false;
 //Tämä on tosi kun peli hävitään
+let peliohi = false;
+//Tämäkin on tosi kun peli hävitään, estää pelaajaa liikkumasta kun peli on hävitty
+let pisteetohi = false;
+//Estää pistemäärää muuttumasta kun peli on hävitty
 
-let pointWall = 500; //pelin vaikeustaso vaihtuu joka 500 pisteen jälkeen
+let pointWall = 1000; //pelin vaikeustaso vaihtuu joka 500 pisteen jälkeen
 
 const player = {
   x: 50,
@@ -29,6 +34,18 @@ const ball = {
 
 const keys = {}; 
 
+function musaSoimaan(){
+  musa.play().catch((error) => {
+    console.error("Virhe äänentoistossa", error);
+  });
+}
+
+function loppuAani(){
+  aani.play().catch((error) => {
+    console.error("Virhe äänentoistossa", error);
+  });
+}
+
 function clear() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
 }
@@ -45,8 +62,7 @@ function drawBall() {
   ctx.drawImage(image, ball.x, ball.y, ball.w, ball.h);
 }
 
-function newPos() {
-  // pallon liikkuminen 
+function newPos() {  // pallon liikkuminen 
   ball.x += ball.dx;
   ball.y += ball.dy;
    // vasen ja oikee
@@ -64,13 +80,31 @@ function newPos() {
     ball.y < player.y + player.h &&
     ball.y + ball.h > player.y
   ) {
-    
+    peliohi = true;
     loppu = true;
     alku = false;
-    let pistemaara = document.getElementById("pisteet");
-    pistemaara.textContent = -1;
-    location.reload("index.html")
+    loppuAani()
+    const canvask = document.getElementById("canvas");
+    const aloitus = document.getElementById("aloitus");
+    const maara = document.getElementById("pisteet");
+    const loppuruutu = document.getElementById("havio");
+    const loppuruutu2 = document.getElementById("havio2");
+    const pisteetpiiloon = document.getElementById("pisteet");
+    const loppupisteet = document.getElementById("lopputulos");
+    loppupisteet.textContent = maara.textContent;
+    loppupisteet.style.fontSize = "x-large"
+    loppupisteet.style.color = "white";
+    canvask.style.background = "grey";
+    aloitus.style.display = "none";
+    pisteetpiiloon.style.display = "none";
+    loppuruutu.style.display = "block";
+    loppuruutu2.style.display = "block";
+
+    setTimeout(function() {
+      location.reload("index.html");
+    }, 3000); 
   }
+  
 
   player.x += player.dx;
   player.y += player.dy;
@@ -106,7 +140,9 @@ function update() {
 
 function aloita(event){
   event.preventDefault();
+  if(!peliohi){
   document.removeEventListener("keydown", aloita);
+  musaSoimaan()
 
   alku = true;
 
@@ -114,46 +150,61 @@ function aloita(event){
 
   const piste = document.getElementById("pistemaara");
   piste.style.display = "block";
-
+  }
 }
 
 function moveUp() {
+  if(!peliohi){
   player.dy = -player.speed;
+  }
 }
 
 function moveDown() {
+  if(!peliohi){
   player.dy = player.speed;
+}
 }
 
 function moveRight() {
+  if(!peliohi){
   player.dx = player.speed;
+  }
 }
 
 function moveLeft() {
+  if(!peliohi){
   player.dx = -player.speed;
+  }
 }
 
 function stopMoving() {
+  if(!peliohi){
   player.dx = 0;
   player.dy = 0;
+  }
 }
 
 document.addEventListener("keydown", (e) => {
+  if(!peliohi){
   keys[e.key] = true; 
   handleKeys();
+  }
 });
 
 document.addEventListener("keyup", (e) => {
+  if(!peliohi){
   delete keys[e.key]; 
   handleKeys();
+  }
 });
 
 function pisteytys(){
+  if(!peliohi && !pisteetohi){
   let pistemaara = document.getElementById("pisteet");
   pistemaara.textContent = parseInt(pistemaara.textContent) + 1;
 
   if (parseInt(pistemaara.textContent) === pointWall) {
-    pointWall += 500; // pitää kirjaa siitä millon pistemäärä mennyt 500, jolloin pallon liikkuminen nopeutuu
+    pointWall += 1000; // pitää kirjaa siitä millon pistemäärä mennyt 500, jolloin pallon liikkuminen nopeutuu
 
     // pallon suunnan vaihtaminen kun nopeus vaihtuu
     // Math.sign() kertoo onko negatiivinen -1 nolla 0 tai positiivinen 1
@@ -163,8 +214,9 @@ function pisteytys(){
     if (Math.sign(ball.dy) === 1 || Math.sign(ball.dy) === 0) {ball.dy += 1}
     if (Math.sign(ball.dy) === -1) {ball.dy -= 1} 
   }
+  pisteetohi = false;
 }
-
+}
 function handleKeys() {
   stopMoving(); 
   if (keys["ArrowRight"]) {
