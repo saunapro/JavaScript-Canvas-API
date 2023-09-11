@@ -21,7 +21,26 @@ body{
 }
 #alkuruutu{
     color:yellow;
+    display: block;
 }
 #pistemaara{
     display:none;
+}
+#pistetulos{
+    display:none;
+}
+#havio{
+    display:none;
+}
+#havio2{
+    display:none;
+}
+#loppuruutu{
+    text-align: center;
+}
+#loppuruutu2{
+    text-align: center;
+}
+#lopputulos{
+    text-align: center;
 }
